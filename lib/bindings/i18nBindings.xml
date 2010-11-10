@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<binding id="i18nllangsselector" extends="form.cField#cTextField">
+	
+	</binding>
+	
+	<binding id="i18nkey" extends="form.cField#cTextField">
+		<implementation>			
+			<method name="zzzzz">
+				<parameter name="val" />
+				<body><![CDATA[
+					var s = "${transui:m.i18n.bo.editor.section-keys,js}";
+				]]></body>
+			</method>
+		</implementation>		
+		<content>
+			<children/>
+			<xul:hbox xbl:inherits="context,spellcheck" flex="1">
+				<xul:textbox anonid="internalcontrol" size="50" maxlength="255" xbl:inherits="maxlength,disabled,size,tabindex,accesskey"/>
+				<xul:label value="${transui:m.i18n.bo.editor.section-keys,ucf,attr}"></xul:label>
+			</xul:hbox>
+		</content>	
+	</binding>
+</bindings>

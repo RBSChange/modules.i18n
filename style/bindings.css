@@ -1,0 +1,6 @@
+cfield[fieldtype="i18nllangsselector"]{
+	-moz-binding: url(binding:modules.i18n.i18nBindings#i18nllangsselector);
+}
+cfield[fieldtype="i18nkey"]{
+	-moz-binding: url(binding:modules.i18n.i18nBindings#i18nkey);
+}

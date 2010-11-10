@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel>
+  <section labeli18n="modules.uixul.bo.doceditor.fieldsgroup.Title">
+  	<field name="label" type="text" disabled="true" />
+    <field name="lcids" type="i18nllangsselector"/>
+  </section>
+  <section label="${transui:m.i18n.bo.editor.section-keys,ucf,attr}" anonid="keysPages">
+  </section>  
+	<xul>
+		<javascript>
+		
+			<constructor><![CDATA[
+				this.extendMethod("fireInitializeComplete", this.initializePackageKeys);
+			]]></constructor>
+			
+			<method name="initializePackageKeys">
+				<parameter name="result" />
+				<body><![CDATA[
+				try
+				{	
+					this.removeAllKeys();
+							
+					if (result.status == 'OK' && result.contents.ids)
+					{	
+						var keysPages = this.getElementByAnonId('keysPages');
+						for(var i = 0; i < result.contents.ids.length; i++)
+						{
+							this.appendKey(keysPages, result.contents.ids[i]);
+						}
+					}
+				}
+				catch (e)
+				{
+					wCore.error("initializePackageKeys", [result], e);
+				}
+				]]></body>
+			</method>	
+			
+			<method name="appendKey">
+				<parameter name="keysPages" />	
+				<parameter name="keyData" />		
+				<body><![CDATA[
+					var row = document.createElement('row');
+					
+					var label = row.appendChild(document.createElement('clabel'));
+					label.setAttribute('id', 'i18n_package_' + keyData.id + '_label');
+					label.setAttribute('control', 'i18n_package_' + keyData.id);
+					label.setAttribute('value', keyData.id);
+					
+					var field = row.appendChild(document.createElement('cfield'));
+					field.setAttribute('name', 'field_' + keyData.id);	
+					field.setAttribute('id', 'i18n_package_' + keyData.id);					
+					field.setAttribute('fieldtype', 'i18nkey');
+					field.setAttribute('initialvalue', wCore.stringifyJSON(keyData));
+					field.setAttribute('hidehelp', 'true');
+					
+					keysPages.appendChild(row);
+				]]></body>
+			</method>
+			
+			<method name="removeAllKeys">
+			<body><![CDATA[
+					var keysPages = this.getElementByAnonId('keysPages');
+					while (keysPages.lastChild)
+					{
+						keysPages.removeChild(keysPages.lastChild);
+					}
+				]]></body>
+			</method>			
+		</javascript>
+	</xul>
+</panel>

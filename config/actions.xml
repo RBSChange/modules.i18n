@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-	<!-- 
+  <!-- 
 	Define here backoffice action
 	Example:
 	<action name="createDocumentName">
@@ -19,19 +19,22 @@
 		]]></body>
 	</action>
 	-->
-	<action name="createFolder">
-		<parameter name="listWidget" />
-		<body><![CDATA[
+  <action name="createFolder">
+    <parameter name="listWidget"/>
+    <body><![CDATA[
 			this.createDocumentEditor('modules_i18n_folder', listWidget.getSelectedItems()[0].id);
 		]]></body>
-	</action>
-	
-	<action name="refreshpackage">
-		<parameter name="listWidget"/>
-		<body><![CDATA[
+  </action>
+  <action name="refreshpackage">
+    <parameter name="listWidget"/>
+    <body><![CDATA[
 			var id = listWidget.getSelectedIds()[0];
 			var lang = this.getContextLang();
 			this.executeJSON("Refreshpackage", {cmpref: id, lang: lang });
 		]]></body>
-	</action>
+  </action>
+  <action name="createPackage">
+    <parameter name="listWidget"/>
+    <body><![CDATA[this.createDocumentEditor('modules_i18n_package', listWidget.getSelectedItems()[0].id);]]></body>
+  </action>
 </actions>

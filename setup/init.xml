@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+	<binding fileName="modules/i18n/persistentdocument/import/i18n_binding.xml" />
+
+	<binding fileName="modules/list/persistentdocument/import/list_binding.xml" />
+		
+	<systemfolder module="list" relatedmodule="i18n">
+		<dynamiclist listid="modules_i18n/lcids" label="Liste des codes langues">
+		</dynamiclist>
+	</systemfolder>
+</script>
