@@ -3,25 +3,433 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<binding id="i18nllangsselector" extends="form.cField#cTextField">
+	<binding id="i18nlangselector" extends="chrome://global/content/bindings/general.xml#basecontrol">
+		<xbl:content>
+			<xul:hbox align="center">
+				<xul:label value="${transui:m.uixul.bo.doceditor.localize-in,ucf} " />
+				<xul:menulist anonid="tolang" xbl:inherits="disabled" onselect="document.getBindingParent(this).onLocalizeTo(this)">
+				    <xul:menupopup />
+				</xul:menulist>
+				<xul:label value=" ${transui:m.uixul.bo.doceditor.localize-from,ucf} " />
+				<xul:menulist anonid="fromlang" onselect="document.getBindingParent(this).onLocalizeFrom(this)">
+				    <xul:menupopup />
+				</xul:menulist>						
+			</xul:hbox>
+		</xbl:content>
+		
+		<implementation>
+		
+			<property name="toLang">
+				<getter><![CDATA[
+					return this.getAttribute("tolang");
+				]]></getter>
+			</property>
+
+			<property name="fromLang">
+				<getter><![CDATA[
+					return this.getAttribute("fromlang");
+				]]></getter>
+			</property>
+						
+			<method name="onLocalizeTo">
+				<parameter name="menulistElem" />
+				<body><![CDATA[
+					var item = menulistElem.selectedItem;
+					var toLang = (item) ? item.value : "";
+					if (this.toLang != toLang)
+					{
+						this.setAttribute('tolang', toLang);
+						this.fireEvent('toLangChange');
+					}
+				]]></body>
+			</method>
+			<method name="onLocalizeFrom">
+				<parameter name="menulistElem" />
+				<body><![CDATA[
+					var item = menulistElem.selectedItem;
+					var fromLang = (item) ? item.value : "";
+					if (this.fromLang != fromLang)
+					{
+						this.setAttribute('fromlang', fromLang);
+						this.fireEvent('fromLangChange');
+					}
+				]]></body>
+			</method>
+			
+			<method name="initMenu">
+				<parameter name="itemsJSON" />
+				<body><![CDATA[
+					var menuTo = document.getAnonymousElementByAttribute(this, "anonid", "tolang");
+					var menuFrom = document.getAnonymousElementByAttribute(this, "anonid", "fromlang");
+					if (menuTo.itemCount == 0)
+					{
+						for (var lcid in itemsJSON)
+						{
+							menuTo.appendItem(itemsJSON[lcid], lcid);
+							menuFrom.appendItem(itemsJSON[lcid], lcid);
+						}
+					}
+					
+					menuTo.value = this.toLang;
+					menuFrom.value = this.fromLang;
+				]]></body>
+			</method>
+			
+			<method name="fireEvent">
+				<parameter name="name" />
+				<body><![CDATA[			
+					var evt = document.createEvent("Event");
+					evt.initEvent(name, true, true);
+					this.dispatchEvent(evt);
+				]]></body>
+			</method>	
+		</implementation>
+	</binding>
 	
+	<binding id="i18npaginator" extends="chrome://global/content/bindings/general.xml#basecontrol">
+		<xbl:content>
+			<xul:toolbar anonid="navigationtb" orient="horizontal" flex="1" xbl:inherits="hidden">
+				<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBack(-1)"
+					image="{IconsBase}/small/control-begin.png"	
+					tooltiptext="${transui:m.uixul.bo.general.navigate-begin,ucf}"/>
+				<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(5)"
+					image="{IconsBase}/small/control-double-backward.png"
+					tooltiptext="${transui:m.uixul.bo.general.navigate-back-quick,ucf}"/>
+				<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack(1)"
+					image="{IconsBase}/small/control-backward.png"
+					tooltiptext="${transui:m.uixul.bo.general.navigate-back,ucf}"/>
+				<xul:hbox align="center">
+					<xul:label anonid="navigationpagelabel" value="${transui:m.i18n.bo.editor.keys,ucf}" />
+					<xul:label anonid="navigationindex" value="0" />
+					<xul:label anonid="navigationpageseparator" value="${transui:m.uixul.bo.general.out-of}" />
+					<xul:label anonid="navigationtotal" value="0" />
+				</xul:hbox>
+				<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext(1)"
+					image="{IconsBase}/small/control-forward.png"
+					tooltiptext="${transui:m.uixul.bo.general.navigate-next,ucf}"/>
+				<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(5)"
+					image="{IconsBase}/small/control-double-forward.png"
+					tooltiptext="${transui:m.uixul.bo.general.navigate-next-quick,ucf}"/>
+				<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateNext(-1)"
+					image="{IconsBase}/small/control-end.png"
+					tooltiptext="${transui:m.uixul.bo.general.navigate-end,ucf}"/>
+			</xul:toolbar>
+		</xbl:content>
+		<implementation>		
+			<property name="pageSize">
+				<getter><![CDATA[
+					if (this.hasAttribute("pagesize"))
+					{
+						return parseInt(this.getAttribute("pagesize"));
+					}
+					return 20;
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("pagesize", val); 
+				]]></setter>
+			</property>	
+
+			<property name="pageIndex">
+				<getter><![CDATA[
+					if (this.hasAttribute("pageindex"))
+					{
+						return parseInt(this.getAttribute("pageindex"));
+					} 
+					return 0;
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("pageindex", val); 
+				]]></setter>
+			</property>
+			
+			<property name="nbItems">
+				<getter><![CDATA[
+					if (this.hasAttribute("nbitems"))
+					{
+						return parseInt(this.getAttribute("nbitems"));
+					} 
+					return 0;
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("nbitems", val); 
+				]]></setter>
+			</property>	
+			
+			<property name="nbItemsTotal">
+				<getter><![CDATA[
+					if (this.hasAttribute("nbitemstotal"))
+					{
+						return parseInt(this.getAttribute("nbitemstotal"));
+					} 
+					return 0;
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("nbitemstotal", val); 
+				]]></setter>
+			</property>
+			
+			<method name="updateUI">
+				<body><![CDATA[
+					var hidden = (this.nbItemsTotal == 0)
+					this.hidden = hidden;
+					if (hidden) {return;}
+					var navigationindex = document.getAnonymousElementByAttribute(this, "anonid", "navigationindex");
+					var start = this.pageIndex * this.pageSize;
+					navigationindex.value = (start + 1) + ' - ' + (start + this.nbItems);
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationtotal").value = this.nbItemsTotal;
+					var disableBack = this.disabled || (start == 0);
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationbegin").disabled = disableBack;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationback2").disabled = disableBack;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationback").disabled = disableBack;		
+					var disableNext = this.disabled || ((start + this.pageSize) >= this.nbItemsTotal);
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext").disabled = disableNext;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext2").disabled = disableNext;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationend").disabled = disableNext;	
+				]]></body>			
+			</method>
+			
+			<method name="navigateBack">
+				<parameter name="offset" />
+				<body><![CDATA[
+					var minPagIndex = 0
+					if (offset == -1)
+					{
+						this.pageIndex = minPagIndex;
+					}
+					else
+					{
+						var i = this.pageIndex - offset;
+						this.pageIndex = (i < 0) ? 0 : i;
+					}
+					this.fireEvent("pageIndexChange");
+				]]></body>
+			</method>	
+			
+			<method name="navigateNext">
+				<parameter name="offset" />
+				<body><![CDATA[
+					var maxPageIndex = (this.nbItemsTotal - (this.nbItemsTotal % this.pageSize)) / this.pageSize;
+					if (offset == -1)
+					{
+						this.pageIndex = maxPageIndex;
+					} 
+					else
+					{
+						var i = this.pageIndex + offset;
+						this.pageIndex = (i > maxPageIndex) ? maxPageIndex : i;
+					}
+					this.fireEvent("pageIndexChange");
+				]]></body>
+			</method>
+			
+			<method name="fireEvent">
+				<parameter name="name" />
+				<body><![CDATA[			
+					var evt = document.createEvent("Event");
+					evt.initEvent(name, true, true);
+					this.dispatchEvent(evt);
+				]]></body>
+			</method>
+		</implementation>	
 	</binding>
 	
 	<binding id="i18nkey" extends="form.cField#cTextField">
-		<implementation>			
-			<method name="zzzzz">
-				<parameter name="val" />
+		<implementation>
+			<field name="mData">null</field>
+			<field name="mContentFrom">null</field>
+			<field name="mHtmlFormat">null</field>
+			<field name="mUserEdit">null</field>
+		
+			<property name="i18nData" readonly="true">
+				<getter><![CDATA[
+					if (this.mData == null)
+					{
+						var str = this.getAttribute("data-i18n");
+						if (str.length > 0)
+						{
+							this.mData = wCore.parseJSON(str);
+						}
+						else
+						{
+							this.mData = {}
+						}
+					}
+					return this.mData;    
+				]]></getter>
+			</property>			
+
+			<property name="toLang" readonly="true">
+				<getter><![CDATA[
+					return this.getAttribute("data-toLang");   
+				]]></getter>
+			</property>
+			
+			<property name="fromLang" readonly="true">
+				<getter><![CDATA[
+					return this.getAttribute("data-fromLang");   
+				]]></getter>
+			</property>
+			
+			<property name="initialformat" readonly="true">
+				<getter><![CDATA[
+					return (this.hasAttribute("data-initialformat")) ? this.getAttribute("data-initialformat") : 'TEXT';   
+				]]></getter>
+			</property>
+			
+			<property name="useredited" readonly="true">
+				<getter><![CDATA[
+					return this.getAttribute("data-useredited") == "true";
+				]]></getter>
+			</property>	
+									
+			<constructor><![CDATA[
+				wCore.debug('i18nkey.constructor');
+				this.mContentFrom = document.getAnonymousElementByAttribute(this, "anonid", "contentFrom");
+				this.mHtmlFormat = document.getAnonymousElementByAttribute(this, "anonid", "htmlformat");
+				this.mUserEdit = document.getAnonymousElementByAttribute(this, "anonid", "useredit");
+				this.initializeExtendUI();
+			]]></constructor>
+			
+			<method name="initializeExtendUI">
 				<body><![CDATA[
-					var s = "${transui:m.i18n.bo.editor.section-keys,js}";
+					var data = this.i18nData;
+					var toLang = this.toLang;	
+					if (toLang in data)
+					{
+						this.setAttribute('data-initialformat', data[toLang].format);
+						this.setAttribute('data-useredited', data[toLang].useredited ? 'true' : 'false');
+					}
+					else
+					{
+						this.setAttribute('data-initialformat', "TEXT");
+						this.setAttribute('data-useredited', 'false');
+					}
+									
+					this.mHtmlFormat.checked = (this.initialformat == "HTML");
+					this.mUserEdit.checked = this.useredited;
+					
+					var fromLang = this.fromLang;
+					if (fromLang in data)
+					{
+						this.mContentFrom.value = data[fromLang].text;
+					}
 				]]></body>
 			</method>
+			
+			<method name="checkIsModified">
+				<body><![CDATA[
+					var htmlFormat = this.mHtmlFormat.checked ? "HTML" : "TEXT";
+					if (htmlFormat != this.initialformat)
+					{
+						return true;
+					}
+					return this.initialvalue != this.value;
+				]]></body>
+			</method>
+				
+			<method name="reset">
+				<body><![CDATA[
+					var modified = this.modified;
+					this.setInitialValue(this.initialvalue);
+					this.mHtmlFormat.checked = (this.initialformat == "HTML");
+					if (modified && this.valid) {this.dispatchFieldEvent('fieldChanged');} 
+				]]></body>
+			</method>
+						
+			<method name="changeFromLang">
+				<parameter name="fromLang" />
+				<body><![CDATA[
+					this.setAttribute("data-fromLang", fromLang);
+					var data = this.i18nData;					
+					if (fromLang in data)
+					{
+						this.mContentFrom.value = data[fromLang].text;
+					}
+					else
+					{
+						this.mContentFrom.value = '';
+					}
+				]]></body>
+			</method>	
+			
+			<method name="changeToLang">
+				<parameter name="toLang" />
+				<body><![CDATA[
+					wCore.debug("changeToLang :" + toLang);
+					this.setAttribute("data-toLang", toLang);
+					var data = this.i18nData;
+					if (toLang in data)
+					{
+						this.setInitialValue(data[toLang].text);
+						this.setAttribute("data-initialformat", data[toLang].format);
+					}
+					else
+					{
+						this.setInitialValue('');
+						this.setAttribute("data-initialformat", "TEXT");
+					}
+					this.mHtmlFormat.checked = (this.initialformat == "HTML");
+				]]></body>
+			</method>				
+
+			<method name="onCopyFrom">
+				<parameter name="toLang" />
+				<body><![CDATA[
+					var txt = "" + this.mContentFrom.value;
+					if (txt.length > 0)
+					{
+						var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);  
+						gClipboardHelper.copyString(txt); 
+					} 					
+				]]></body>
+			</method>	
+			
+			<method name="onFormatChange">
+				<body><![CDATA[
+					wCore.debug('changeFromLang');
+					this.valueChanged();				
+				]]></body>
+			</method>	
+						
+			<method name="getModifiedValue">			
+				<body><![CDATA[
+					return {"id": this.getAttribute("data-id"), 
+							"content" : this.value,
+							"lcid" : this.toLang,
+							"format" : this.mHtmlFormat.checked ? "HTML" : "TEXT"
+						   }			
+				]]></body>
+			</method>							
+							
 		</implementation>		
 		<content>
-			<children/>
-			<xul:hbox xbl:inherits="context,spellcheck" flex="1">
-				<xul:textbox anonid="internalcontrol" size="50" maxlength="255" xbl:inherits="maxlength,disabled,size,tabindex,accesskey"/>
-				<xul:label value="${transui:m.i18n.bo.editor.section-keys,ucf,attr}"></xul:label>
-			</xul:hbox>
+			<xul:vbox flex="1">
+				<xul:hbox>
+					<xul:textbox anonid="internalcontrol"  flex="1"
+						multiline="true" rows="2" 
+						xbl:inherits="maxlength,disabled,tabindex,accesskey,rows"/>
+					<xul:spacer width="10px" />
+					
+					<xul:toolbar orient="vertical">
+						<xul:toolbarbutton anonid="useredit" type="checkbox" disabled="true" autoCheck="false" checked="false" 
+							image="{IconsBase}/small/user-backoffice.png"
+							tooltiptext="${transui:m.i18n.bo.editor.user-edited,ucf}" />
+						<xul:toolbarbutton anonid="htmlformat" type="checkbox" checked="false"
+							image="{IconsBase}/small/ui-label.png" oncommand="document.getBindingParent(this).onFormatChange()"
+							tooltiptext="${transui:m.i18n.bo.editor.html-content,ucf}" />
+					</xul:toolbar>
+				</xul:hbox>
+				<xul:hbox>
+					<xul:textbox anonid="contentFrom" disabled="true"  flex="1"
+						multiline="true"  rows="2" 
+						xbl:inherits="maxlength,disabled,tabindex,accesskey,rows"/>
+					<xul:spacer width="10px" />
+					<xul:toolbar orient="vertical">
+						<xul:toolbarbutton anonid="copybutton" image="{IconsBase}/small/richtext/copy.png"
+							tooltiptext="${transui:m.uixul.bo.richtext.copy,ucf}" oncommand="document.getBindingParent(this).onCopyFrom()" />
+					</xul:toolbar>					
+				</xul:hbox>
+			</xul:vbox>
 		</content>	
 	</binding>
 </bindings>

@@ -57,7 +57,7 @@ class i18n_PackageNode
 	public function buildFolders($currentFolder)
 	{
 		$this->folderId = $currentFolder->getId();
-		$result = 1;
+		$result = 0;
 		foreach ($this->children as $name => $node) 
 		{
 			if (!$node->isFolder()) 
@@ -66,6 +66,10 @@ class i18n_PackageNode
 				continue;
 			}		
 			$folderDoc = i18n_ModuleService::getInstance()->getChildFolderDocumentByLabel($this->folderId, $name);
+			if ($folderDoc->isNew())
+			{
+				$result = 1;
+			}
 			$folderDoc->save($this->folderId);
 			$result += $node->buildFolders($folderDoc);
 		}
@@ -74,6 +78,7 @@ class i18n_PackageNode
 	
 	public function buildPackages()
 	{
+		$added = 0;
 		if ($this->nbKeys > 0)
 		{
 			$pakage = i18n_ModuleService::getInstance()->getPackageByLabel($this->path);
@@ -81,6 +86,7 @@ class i18n_PackageNode
 			if ($pakage->isNew())
 			{
 				Framework::info(__METHOD__ . " Add " . $this->path . " : " . $this->nbKeys);
+				$added++;
 			}
 			$pakage->save($this->folderId);
 			if ($pakage->getTreeId() == null)
@@ -90,7 +96,8 @@ class i18n_PackageNode
 		}
 		foreach ($this->children as $name => $node) 
 		{
-			$node->buildPackages();
+			$added += $node->buildPackages();
 		}
+		return $added;
 	}
 }

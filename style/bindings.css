@@ -1,6 +1,10 @@
-cfield[fieldtype="i18nllangsselector"]{
-	-moz-binding: url(binding:modules.i18n.i18nBindings#i18nllangsselector);
+i18nlangselector{
+	-moz-binding: url(binding:modules.i18n.i18nBindings#i18nlangselector);
 }
-cfield[fieldtype="i18nkey"]{
+i18npaginator {
+	-moz-binding: url(binding:modules.i18n.i18nBindings#i18npaginator);
+}
+
+cfield[fieldtype="i18nkey"] {
 	-moz-binding: url(binding:modules.i18n.i18nBindings#i18nkey);
 }

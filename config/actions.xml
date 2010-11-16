@@ -1,38 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-  <!-- 
-	Define here backoffice action
-	Example:
-	<action name="createDocumentName">
-		<parameter name="listWidget" />
+	<action name="onModuleInit">
 		<body><![CDATA[
-			this.createDocumentEditor('modules_MODULENAME_DOCUMENTNAME', listWidget.getSelectedItems()[0].id);
+			this.executeJSON("CheckModuleInit", {cmpref: this.mRootFolderId, lang:this.getContextLang()});
 		]]></body>
 	</action>
 	
-	Return true if the action 'createDocumentName' is active.
-	<action name="createDocumentNameIsActive">
-		<parameter name="itemData"/>
+	<action name="onCheckModuleInitSuccess">
+		<parameter name="result" />
 		<body><![CDATA[
-			//Ex : le document existe dans la langue de travail
-			return itemData.langAvailable;
+			if (result.contents.nbpackage == 0)
+			{
+				var notifZone = this.getElementByAnonId('initnotification');
+				var refreshpackageAction = this.getActionInfo('refreshpackage');	
+				var callback = function (notif, bI) {bI.module.initRefreshpackage(bI.module.mRootFolderId)};
+				var buttons = [{callback:callback, label:refreshpackageAction.label, accessKey:"", module: this}];
+				notifZone.appendNotification("${transui:m.i18n.bo.general.package-not-initialized,js}", 
+					'refreshpackage', wToolkit.getIcon('package', 'small'), notifZone.PRIORITY_CRITICAL_BLOCK, buttons);		
+			}
 		]]></body>
 	</action>
-	-->
+	
   <action name="createFolder">
     <parameter name="listWidget"/>
     <body><![CDATA[
 			this.createDocumentEditor('modules_i18n_folder', listWidget.getSelectedItems()[0].id);
 		]]></body>
   </action>
+  
+   <action name="initRefreshpackage">
+    <parameter name="id"/>
+    <body><![CDATA[
+			var lang = this.getContextLang();
+			getController().alert("${transui:m.i18n.bo.general.updating-package,js}")
+			this.executeJSON("Refreshpackage", {cmpref: id, lang: lang });
+		]]></body>
+  </action>
+  
   <action name="refreshpackage">
     <parameter name="listWidget"/>
     <body><![CDATA[
 			var id = listWidget.getSelectedIds()[0];
 			var lang = this.getContextLang();
+			getController().alert("${transui:m.i18n.bo.general.updating-package,js}")
 			this.executeJSON("Refreshpackage", {cmpref: id, lang: lang });
 		]]></body>
   </action>
+  
+  <action name="onRefreshpackageSuccess">
+    <parameter name="result"/>
+    <body><![CDATA[
+    		wCore.debug(wCore.dump(result.contents));
+			getController().alert("${transui:m.i18n.bo.general.package-added,lab,js} " + result.contents.nbPackages + 
+				 "\n${transui:m.i18n.bo.general.folder-added,lab,js} " +  result.contents.nbFolders);
+		]]></body>
+  </action>
+   
   <action name="createPackage">
     <parameter name="listWidget"/>
     <body><![CDATA[this.createDocumentEditor('modules_i18n_package', listWidget.getSelectedItems()[0].id);]]></body>

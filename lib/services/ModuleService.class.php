@@ -52,7 +52,7 @@ class i18n_ModuleService extends ModuleBaseService
 		
 		$nbPackages = $root->buildPackages($folder);
 		
-		return array('count' => $nbFolder);
+		return array('nbPackages' => $nbPackages, 'nbFolders' => $nbFolder);
 	}
 
 	/**
@@ -105,5 +105,25 @@ class i18n_ModuleService extends ModuleBaseService
 			$items[$lcid] = $label === null ? $lk : $label;
 		}
 		return $items;
+	}
+	
+	/**
+	 * @param generic_persistentdocument_folder $folder
+	 * @return string
+	 */
+	public function getPackageNameByFolder($folder)
+	{
+		if ($folder instanceof generic_persistentdocument_folder && !($folder instanceof generic_persistentdocument_rootfolder)) 
+		{
+			$ancestors = generic_FolderService::getInstance()->getAncestorsOf($folder, $folder->getDocumentModelName());
+			$ancestors[] = $folder;
+			$parts = array();
+			foreach ($ancestors as $folder) 
+			{
+				$parts[] = $folder->getLabel();
+			}
+			return implode('.', $parts);	
+		}
+		return '';
 	}
 }

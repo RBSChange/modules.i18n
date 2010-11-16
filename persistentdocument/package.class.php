@@ -5,7 +5,23 @@
  */
 class i18n_persistentdocument_package extends i18n_persistentdocument_packagebase 
 {
+	
+	/**
+	 * @var array
+	 */
 	private $idNodes = null;
+		
+	/**
+	 * @var integer
+	 */
+	private $pageSize = 20;		
+	
+	
+	/**
+	 * @var integer
+	 */
+	private $pageIndex = 0;		
+	
 	
 	/**
 	 * @param string $moduleName
@@ -22,13 +38,64 @@ class i18n_persistentdocument_package extends i18n_persistentdocument_packagebas
 	 */
 	public function addFormProperties($propertiesNames, &$formProperties)
 	{
+		if (in_array('loadpaginedkeys', $propertiesNames))
+		{
+			$ls = LocaleService::getInstance();
+			$this->populate();
+			$count = count($this->idNodes);
+			$formProperties['nbids'] = $count;
+			$pageSize = $this->getPageSize();
+			$index = $this->getPageindex() * $pageSize;
+			if ($index >= $count)
+			{
+				$index = 0;
+				$this->setPageIndex(0);
+			}
+			$formProperties['pagesize'] = $pageSize;
+			$formProperties['pageindex'] = $this->getPageindex();
+			
+			$formProperties['ids'] = array();
+			for ($i = 0; $i < $pageSize; $i++) 
+			{
+				if (!isset($this->idNodes[$index + $i]))
+				{
+					break;
+				}
+				$node = $this->idNodes[$index + $i];
+				$formProperties['ids'][] = $node->toBoArray();
+			}
+		}
+		
 		if (in_array('lcids', $propertiesNames))
 		{
-			$formProperties['lcids'] = LocaleService::getInstance()->getLCID(RequestContext::getInstance()->getLang());
-			$formProperties['ids'] = $this->getIdsForBo();
+			$formProperties['lcids'] = i18n_ModuleService::getInstance()->getLcidLabels();
+			$formProperties['tolang'] = $ls->getLCID(RequestContext::getInstance()->getLang());
 		}
+	}	
+	
+	/**
+	 * @return integer the $pageSize
+	 */
+	public function getPageSize()
+	{
+		return $this->pageSize;
 	}
 
+	/**
+	 * @return integer the $pageIndex
+	 */
+	public function getPageindex()
+	{
+		return $this->pageIndex;
+	}
+
+	/**
+	 * @param integer $pageIndex
+	 */
+	public function setPageindex($pageIndex)
+	{
+		$this->pageIndex = $pageIndex;
+	}
 	
 	private function populate()
 	{
@@ -44,32 +111,23 @@ class i18n_persistentdocument_package extends i18n_persistentdocument_packagebas
 		}
 	}
 	
-	private function getIdsForBo()
+	private $modifiedKeysArray = null;
+	
+	public function setUpdatedkeys($jsonString)
 	{
-		$result = array();
-		$this->populate();
-		$count = count($this->idNodes);
-		for ($i = 0; $i < $count; $i++) 
+		$data = JsonService::getInstance()->decode($jsonString);
+		if (count($data))
 		{
-			$node = $this->idNodes[$i];
-			$info = array('id' => $node->getId(), 'key' => $this->getLabel() . '.' . $node->getId());
-			foreach ($node->getLcidArray() as $lcid) 
-			{
-				$info['langs'][$lcid] = array('text' => $node->getTextByLcid($lcid), 'useredited' => $node->getUserEditByLcid($lcid));
-			}
-			$result[] = $info;
+			$this->setModificationdate(null);
+			$this->modifiedKeysArray = $data;
 		}
-		return $result;
 	}
 	
-	private function getDefinedLcids()
+	/**
+	 * @return array<array<id => string, content => string, lcid = string, format => string>>
+	 */
+	public function getModifiedKeysArray()
 	{
-		$lcids = array();
-		$this->populate();
-		foreach ($this->idNodes as $node) 
-		{
-			$lcids = array_merge($lcids, $node->getLcidArray());
-		}
-		return implode(',', $lcids);
+		return $this->modifiedKeysArray;
 	}
 }

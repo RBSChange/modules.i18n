@@ -57,10 +57,19 @@ class i18n_PackageService extends f_persistentdocument_DocumentService
 	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
-//	protected function preSave($document, $parentNodeId)
-//	{
-//
-//	}
+	protected function preSave($document, $parentNodeId)
+	{
+		$datas = $document->getModifiedKeysArray();
+		if (count($datas) > 0)
+		{
+			$baseKey = 	$document->getLabel();	
+			$ls = LocaleService::getInstance();
+			foreach ($datas as $keyInfo) 
+			{
+				$ls->updateUserEditedKey($keyInfo['lcid'], $keyInfo['id'], $baseKey, $keyInfo['content'], $keyInfo['format']);	
+			}
+		}
+	}
 
 	/**
 	 * @param i18n_persistentdocument_package $document

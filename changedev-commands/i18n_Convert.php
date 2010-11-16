@@ -31,12 +31,10 @@ class commands_i18n_Convert extends commands_AbstractChangeCommand
 //	{
 //	}
 
-	/**
-	 * @return String[]
-	 */
-//	function getOptions()
-//	{
-//	}
+	function getOptions()
+	{
+		return array("--rlf", "-cif");
+	}
 
 	/**
 	 * @param Integer $completeParamCount the parameters that are already complete in the command line
@@ -54,7 +52,7 @@ class commands_i18n_Convert extends commands_AbstractChangeCommand
 		foreach (glob("modules/*/locale", GLOB_ONLYDIR) as $path)
 		{
 			$module = dirname($path);
-			$components[] = basename($module);
+			$components[] = "modules/" . basename($module);
 		}
 		foreach (glob("themes/*/locale", GLOB_ONLYDIR) as $path)
 		{
@@ -75,10 +73,23 @@ class commands_i18n_Convert extends commands_AbstractChangeCommand
 		$this->message("== Convert old locale folder ==");
 		$this->loadFramework();
 		$ls = LocaleService::getInstance();
-		
-		$ls->convertLocales();
-		
-
+		$removeLocalFolder = isset($options['rlf']);
+		$clearI18nFolder = isset($options['cif']);
+		if (count($params) === 0)
+		{
+			$ls->convertLocales(null, $removeLocalFolder, $clearI18nFolder);
+		}
+		else
+		{
+			foreach ($params as $value) 
+			{
+				if ($value === 'framework' || strpos($value, 'themes/') === 0 || strpos($value, 'modules/') === 0)
+				{
+					$ls->convertLocales($value, $removeLocalFolder, $clearI18nFolder);
+				}
+			}
+		}
+	
 		$this->quitOk("Command successfully executed");
 	}
 }

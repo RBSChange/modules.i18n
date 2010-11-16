@@ -3,7 +3,5 @@
   <section labeli18n="modules.uixul.bo.doceditor.fieldsgroup.Title">
     <field name="label"/>
     <field name="nbkeys"/>
-    <field name="s18s"/>
-    <field name="lastrefresh"/>
   </section>
 </panel>

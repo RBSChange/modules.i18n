@@ -2,4 +2,6 @@
 <i18n baseKey="m.i18n.bo.useractionlogger" lcid="fr_FR">
   <key id="delete-package">delete.package {documentlabel}</key>
   <key id="log-delete-package">log delete package</key>
+  <key id="update-package">update.package {documentlabel}</key>
+  <key id="log-update-package">log update package</key>
 </i18n>

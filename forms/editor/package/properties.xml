@@ -2,30 +2,159 @@
 <panel>
   <section labeli18n="modules.uixul.bo.doceditor.fieldsgroup.Title">
   	<field name="label" type="text" disabled="true" />
-    <field name="lcids" type="i18nllangsselector"/>
   </section>
   <section label="${transui:m.i18n.bo.editor.section-keys,ucf,attr}" anonid="keysPages">
   </section>  
 	<xul>
 		<javascript>
-		
+			<field name="mi18nlangselector">null</field>
+			<field name="mi18npaginator">null</field>
+			
 			<constructor><![CDATA[
+				var actbar = this.getElementByAnonId('action-bar');			
+				this.getElementByAnonId('next_error_property').hidden= true;
+				this.mi18nlangselector = document.createElement('i18nlangselector');
+				var me = this;
+				this.addEventListener('toLangChange', function(event) {me.onToLangChange(event.originalTarget.toLang)}, true);
+				this.addEventListener('fromLangChange', function(event) {me.onFromLangChange(event.originalTarget.fromLang)}, true);
+				
+				actbar.appendChild(this.mi18nlangselector);
+				this.mi18npaginator = document.createElement('i18npaginator');
+				this.addEventListener('pageIndexChange', function(event) {me.onPageIndexChange(event.originalTarget.pageIndex)}, true);
+				
+				actbar.appendChild(this.mi18npaginator);
+				this.extendMethod("updateCommandsUI", this.updateEditContentUI);
 				this.extendMethod("fireInitializeComplete", this.initializePackageKeys);
 			]]></constructor>
+			
+			<property name="fromLang">
+				<getter><![CDATA[
+					if (this.hasAttribute("fromlang"))
+					{
+						return this.getAttribute("fromlang");
+					}
+					return "";
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("fromlang", val); 
+				]]></setter>
+			</property>	
+
+			<property name="toLang">
+				<getter><![CDATA[
+					if (this.hasAttribute("tolang"))
+					{
+						return this.getAttribute("tolang");
+					} 
+					return Context.W_LANG;
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("tolang", val); 
+				]]></setter>
+			</property>	
+			
+			<property name="pageIndex">
+				<getter><![CDATA[
+					if (this.hasAttribute("pageindex"))
+					{
+						return parseInt(this.getAttribute("pageindex"));
+					} 
+					return 0;
+				]]></getter>
+				<setter><![CDATA[
+					this.setAttribute("pageindex", val); 
+				]]></setter>
+			</property>	
+
+			<method name="onToLangChange">
+				<parameter name="toLang" />
+				<body><![CDATA[
+					if (this.modified) {return;}
+					this.toLang = toLang;
+					var keysPages = this.getElementByAnonId('keysPages');
+					var nodes = keysPages.querySelectorAll("cfield");
+					for (var i = 0; i < nodes.length; i++)
+					{
+						nodes[i].changeToLang(toLang);
+					}
+				]]></body>
+			</method>
+			
+			<method name="onFromLangChange">
+				<parameter name="fromLang" />
+				<body><![CDATA[
+					try 
+					{
+						this.fromLang = fromLang;
+						var keysPages = this.getElementByAnonId('keysPages');
+						var nodes = keysPages.querySelectorAll("cfield");
+						for (var i = 0; i < nodes.length; i++)
+						{
+							nodes[i].changeFromLang(fromLang);
+						}
+					} 
+					catch (e)
+					{
+						wCore.error('onFromLangChange', [fromLang], e);
+					}
+				]]></body>
+			</method>
+													
+			<method name="updateEditContentUI">
+				<parameter name="event" />
+				<body><![CDATA[
+					var disabled = this.modified;
+					this.mi18nlangselector.disabled = disabled;
+					if (disabled != this.mi18npaginator.disabled)
+					{
+						this.mi18npaginator.disabled = disabled;
+						this.mi18npaginator.updateUI();
+					}
+				]]></body>
+			</method>
+			
+			<method name="getInitializeParameters">
+				<body><![CDATA[
+					return {
+						action: 'LoadJSON',
+						cmpref: this.documentEditor.documentid, 
+						lang : Context.W_LANG, 
+						pageindex : this.pageIndex,
+						documentproperties: this.mFieldNames.join(',') + ',lcids,loadpaginedkeys'
+					};
+				]]></body>
+			</method>
 			
 			<method name="initializePackageKeys">
 				<parameter name="result" />
 				<body><![CDATA[
 				try
 				{	
-					this.removeAllKeys();
-							
-					if (result.status == 'OK' && result.contents.ids)
+					this.removeAllKeys();						
+					if (result.status == 'OK')
 					{	
-						var keysPages = this.getElementByAnonId('keysPages');
-						for(var i = 0; i < result.contents.ids.length; i++)
+						var contents = result.contents;
+						if ("lcids" in contents)
 						{
-							this.appendKey(keysPages, result.contents.ids[i]);
+							this.toLang = contents.tolang;
+							this.fromLang = "";
+							this.mi18nlangselector.setAttribute("tolang", this.toLang);
+							this.mi18nlangselector.setAttribute("fromlang", this.fromLang);
+							this.mi18nlangselector.initMenu(contents.lcids);
+						}
+						
+						this.pageIndex = contents.pageindex;
+						var nbids = contents.ids.length;						
+						this.mi18npaginator.pageSize = contents.pagesize;
+						this.mi18npaginator.pageIndex = contents.pageindex;				
+						this.mi18npaginator.nbItemsTotal = contents.nbids;
+						this.mi18npaginator.nbItems = nbids;
+						this.mi18npaginator.updateUI();
+						
+						var keysPages = this.getElementByAnonId('keysPages');
+						for(var i = 0; i < nbids; i++)
+						{
+							this.appendKey(keysPages, contents.ids[i]);
 						}
 					}
 				}
@@ -51,9 +180,19 @@
 					field.setAttribute('name', 'field_' + keyData.id);	
 					field.setAttribute('id', 'i18n_package_' + keyData.id);					
 					field.setAttribute('fieldtype', 'i18nkey');
-					field.setAttribute('initialvalue', wCore.stringifyJSON(keyData));
+					field.setAttribute('data-id', keyData.id);
+					field.setAttribute('data-i18n', wCore.stringifyJSON(keyData.langs));
+					field.setAttribute('data-toLang', this.toLang);
+					field.setAttribute('data-fromLang', this.fromLang);
+					if (this.toLang in keyData.langs)
+					{
+						field.setAttribute('initialvalue', keyData.langs[this.toLang].text);
+					}
+					else
+					{
+						field.setAttribute('initialvalue', '');
+					}		
 					field.setAttribute('hidehelp', 'true');
-					
 					keysPages.appendChild(row);
 				]]></body>
 			</method>
@@ -65,6 +204,81 @@
 					{
 						keysPages.removeChild(keysPages.lastChild);
 					}
+				]]></body>
+			</method>
+			
+			<method name="resetProperties">
+				<body><![CDATA[
+					var keysPages = this.getElementByAnonId('keysPages');
+					var fields = keysPages.querySelectorAll("cfield");
+					var field = null;
+					for (var i = 0; i < fields.length; i++)
+					{
+						field = fields[i];
+						if ('reset' in field) {field.reset();}
+					}	
+					this.refreshErrorState();
+					this.gotoTop();
+				]]></body>
+			</method>
+			
+			<method name="onPageIndexChange">
+				<parameter name="newPageIndex" />
+				<body><![CDATA[
+					try 
+					{
+						if (this.pageIndex != newPageIndex)
+						{
+							wCore.debug('onPageIndexChange '+ this.pageIndex + ' -> ' + newPageIndex);
+							this.pageIndex = newPageIndex;
+							this.documentEditor.executeServerAction('properties', 'LoadPage');
+						}
+					} 
+					catch (e)
+					{
+						wCore.error('onFromLangChange', [fromLang], e);
+					}
+				]]></body>
+			</method>
+			
+			<method name="getLoadPageParameters">
+				<body><![CDATA[
+					return {
+						action: 'LoadJSON',
+						cmpref: this.mDocumentId, 
+						lang : this.mLang, 
+						pageindex : this.pageIndex,
+						documentproperties: 'loadpaginedkeys'
+					};
+				]]></body>
+			</method>
+			
+			<method name="fireLoadPageComplete">
+				<parameter name="result" />
+				<body><![CDATA[	
+					this.initializePackageKeys(result);
+				]]></body>
+			</method>	
+			
+			<method name="preparePropertiesValues">
+				<parameter name="attributes" />
+				<body><![CDATA[	
+					attributes.documentproperties += ',loadpaginedkeys,pageindex,updatedkeys'
+					attributes.pageindex = this.pageIndex;
+					
+					var keysPages = this.getElementByAnonId('keysPages');
+					var fields = keysPages.querySelectorAll("cfield");
+					var field = null;
+					var updatedkeys = [];
+					for (var i = 0; i < fields.length; i++)
+					{
+						field = fields[i];
+						if (field.modified) 
+						{
+							updatedkeys.push(field.getModifiedValue());
+						}
+					}					
+					attributes.updatedkeys = wCore.stringifyJSON(updatedkeys);
 				]]></body>
 			</method>			
 		</javascript>

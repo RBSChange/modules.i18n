@@ -46,7 +46,23 @@ class commands_i18n_ImportOverride extends commands_AbstractChangeCommand
 	 */
 	function getParameters($completeParamCount, $params, $options, $current)
 	{
-		return null;
+		$components = array();
+		if (is_dir("override/framework/i18n"))
+		{
+			$components[] = "framework";
+		}
+		foreach (glob("override/modules/*/i18n", GLOB_ONLYDIR) as $path)
+		{
+			$module = dirname($path);
+			$components[] = "modules/" . basename($module);
+		}
+		foreach (glob("override/themes/*/i18n", GLOB_ONLYDIR) as $path)
+		{
+			$module = dirname($path);
+			$components[] = "themes/" . basename($module);
+		}		
+		
+		return array_diff($components, $params);
 	}
 
 	/**
@@ -59,7 +75,20 @@ class commands_i18n_ImportOverride extends commands_AbstractChangeCommand
 		$this->message("== Import override i18n folder ==");
 		$this->loadFramework();
 		$ls = LocaleService::getInstance();
-		$this->warnMessage("Not implemented...");		
+		if (count($params) === 0)
+		{
+			$ls->importOverride();
+		}
+		else
+		{
+			foreach ($params as $value) 
+			{
+				if ($value === 'framework' || strpos($value, 'themes/') === 0 || strpos($value, 'modules/') === 0)
+				{
+					$ls->importOverride($value);
+				}
+			}
+		}
 		$this->quitOk("Command successfully executed");
 	}
 }
