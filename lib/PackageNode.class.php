@@ -68,7 +68,7 @@ class i18n_PackageNode
 			$folderDoc = i18n_ModuleService::getInstance()->getChildFolderDocumentByLabel($this->folderId, $name);
 			if ($folderDoc->isNew())
 			{
-				$result = 1;
+				$result += 1;
 			}
 			$folderDoc->save($this->folderId);
 			$result += $node->buildFolders($folderDoc);
