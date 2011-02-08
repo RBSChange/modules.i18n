@@ -22,16 +22,7 @@ class i18n_persistentdocument_package extends i18n_persistentdocument_packagebas
 	 */
 	private $pageIndex = 0;		
 	
-	
-	/**
-	 * @param string $moduleName
-	 * @param string $treeType
-	 * @param array<string, string> $nodeAttributes
-	 */
-//	protected function addTreeAttributes($moduleName, $treeType, &$nodeAttributes)
-//	{
-//	}
-	
+
 	/**
 	 * @param string $actionType
 	 * @param array $formProperties
