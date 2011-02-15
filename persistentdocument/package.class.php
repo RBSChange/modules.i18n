@@ -5,6 +5,27 @@
  */
 class i18n_persistentdocument_package extends i18n_persistentdocument_packagebase 
 {
+	/**
+	 * @return indexer_IndexedDocument
+	 */
+	public function getBackofficeIndexedDocument()
+	{
+		$indexedDoc = parent::getBackofficeIndexedDocument();
+		
+		$textArray = array($this->getLabel());
+		
+		$ls = LocaleService::getInstance();
+		$this->populate();
+		$lcid = $ls->getLCID(RequestContext::getInstance()->getLang());
+		foreach ($this->idNodes as $node) 
+		{
+			$textArray[] = $node->getTextByLcid($lcid);
+		}
+		
+		$indexedDoc->setText(implode(' ', $textArray));
+		
+		return $indexedDoc;
+	}
 	
 	/**
 	 * @var array
