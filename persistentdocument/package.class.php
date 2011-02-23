@@ -37,53 +37,10 @@ class i18n_persistentdocument_package extends i18n_persistentdocument_packagebas
 	 */
 	private $pageSize = 20;		
 	
-	
 	/**
 	 * @var integer
 	 */
-	private $pageIndex = 0;		
-	
-
-	/**
-	 * @param string $actionType
-	 * @param array $formProperties
-	 */
-	public function addFormProperties($propertiesNames, &$formProperties)
-	{
-		if (in_array('loadpaginedkeys', $propertiesNames))
-		{
-			$ls = LocaleService::getInstance();
-			$this->populate();
-			$count = count($this->idNodes);
-			$formProperties['nbids'] = $count;
-			$pageSize = $this->getPageSize();
-			$index = $this->getPageindex() * $pageSize;
-			if ($index >= $count)
-			{
-				$index = 0;
-				$this->setPageIndex(0);
-			}
-			$formProperties['pagesize'] = $pageSize;
-			$formProperties['pageindex'] = $this->getPageindex();
-			
-			$formProperties['ids'] = array();
-			for ($i = 0; $i < $pageSize; $i++) 
-			{
-				if (!isset($this->idNodes[$index + $i]))
-				{
-					break;
-				}
-				$node = $this->idNodes[$index + $i];
-				$formProperties['ids'][] = $node->toBoArray();
-			}
-		}
-		
-		if (in_array('lcids', $propertiesNames))
-		{
-			$formProperties['lcids'] = i18n_ModuleService::getInstance()->getLcidLabels();
-			$formProperties['tolang'] = $ls->getLCID(RequestContext::getInstance()->getLang());
-		}
-	}	
+	private $pageIndex = 0;
 	
 	/**
 	 * @return integer the $pageSize
@@ -121,6 +78,15 @@ class i18n_persistentdocument_package extends i18n_persistentdocument_packagebas
 				$this->idNodes[] = $node;
 			}
 		}
+	}
+	
+	/**
+	 * @var array
+	 */
+	public function getIdNodes()
+	{
+		$this->populate();
+		return $this->idNodes;
 	}
 	
 	private $modifiedKeysArray = null;
