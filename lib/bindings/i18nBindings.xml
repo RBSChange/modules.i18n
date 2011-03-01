@@ -420,8 +420,7 @@
 					</xul:toolbar>
 				</xul:hbox>
 				<xul:hbox>
-					<xul:textbox anonid="contentFrom" disabled="true"  flex="1"
-						multiline="true"  rows="2" 
+					<xul:textbox anonid="contentFrom" readonly="true" flex="1" multiline="true" rows="2" 
 						xbl:inherits="maxlength,disabled,tabindex,accesskey,rows"/>
 					<xul:spacer width="10px" />
 					<xul:toolbar orient="vertical">
