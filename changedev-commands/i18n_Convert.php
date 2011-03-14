@@ -11,7 +11,7 @@ class commands_i18n_Convert extends commands_AbstractChangeCommand
 	 */
 	function getUsage()
 	{
-		return "<moduleName>";
+		return "[[framework|themes/<themeName>|modules/<moduleName>] ...]";
 	}
 
 	/**
@@ -86,6 +86,10 @@ class commands_i18n_Convert extends commands_AbstractChangeCommand
 				if ($value === 'framework' || strpos($value, 'themes/') === 0 || strpos($value, 'modules/') === 0)
 				{
 					$ls->convertLocales($value, $removeLocalFolder, $clearI18nFolder);
+				}
+				else
+				{
+					$this->warnMessage('Invalid parameter: '.$value.' (parameters should be "framework", "modules/<moduleName>" or "themes/<themeName>)');
 				}
 			}
 		}
