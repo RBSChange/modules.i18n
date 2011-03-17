@@ -55,9 +55,27 @@
 				 "\n${transui:m.i18n.bo.general.folder-added,lab,js} " +  result.contents.nbFolders);
 		]]></body>
   </action>
+  
+  
+   <action name="clearCaches">
+    <parameter name="listWidget"/>
+    <body><![CDATA[
+    		var lang = this.getContextLang();
+			this.executeJSON("ClearCaches", {lang: lang });
+		]]></body>
+  </action>
+  
+  <action name="onClearCachesSuccess">
+    <parameter name="listWidget"/>
+    <body><![CDATA[
+    		getController().alert("${transui:m.i18n.bo.general.cache-cleared,js}");
+    		enableReloadInterface();
+		]]></body>
+  </action>
    
   <action name="createPackage">
     <parameter name="listWidget"/>
     <body><![CDATA[this.createDocumentEditor('modules_i18n_package', listWidget.getSelectedItems()[0].id);]]></body>
   </action>
+  
 </actions>

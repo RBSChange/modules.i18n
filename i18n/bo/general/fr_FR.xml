@@ -6,4 +6,5 @@
   <key id="updating-package" format="TEXT">Mise à jour de la structure en cours...</key>
   <key id="package-added" format="TEXT">Nombre de paquets ajouté</key>
   <key id="folder-added" format="TEXT">Nombre de dossiers ajouté</key>
+  <key id="cache-cleared">Caches vidés</key>
 </i18n>
