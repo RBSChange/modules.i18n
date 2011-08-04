@@ -3,4 +3,5 @@
   <binding fileName="modules/useractionlogger/persistentdocument/import/useractionlogger_binding.xml"/>
   <actiondef modulename="i18n" actionname="delete.package" label="m.i18n.bo.useractionlogger.delete-package"/>
   <actiondef modulename="i18n" actionname="update.package" label="m.i18n.bo.useractionlogger.update-package"/>
+  <actiondef modulename="i18n" actionname="insert.package" label="m.i18n.bo.useractionlogger.insert-package"/>
 </script>

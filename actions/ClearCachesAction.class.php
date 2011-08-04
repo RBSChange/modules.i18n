@@ -3,11 +3,11 @@
  * i18n_ClearCachesAction
  * @package modules.i18n.actions
  */
-class i18n_ClearCachesAction extends f_action_BaseJSONAction
+class i18n_ClearCachesAction extends change_JSONAction
 {
 	/**
-	 * @param Context $context
-	 * @param Request $request
+	 * @param change_Context $context
+	 * @param change_Request $request
 	 */
 	public function _execute($context, $request)
 	{
