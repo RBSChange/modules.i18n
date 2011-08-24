@@ -111,5 +111,21 @@ class i18n_PackageService extends f_persistentdocument_DocumentService
 			$formProperties['lcids'] = i18n_ModuleService::getInstance()->getLcidLabels();
 			$formProperties['tolang'] = $ls->getLCID(RequestContext::getInstance()->getLang());
 		}
-	}	
+	}
+
+	/**
+	 * @param indexer_IndexedDocument $indexedDocument
+	 * @param i18n_persistentdocument_package $document
+	 * @param indexer_IndexService $indexService
+	 */
+	protected function updateIndexDocument($indexedDocument, $document, $indexService)
+	{
+		$ls = LocaleService::getInstance();
+		$lcid = $ls->getLCID(RequestContext::getInstance()->getLang());
+		foreach ($document->getIdNodes() as $node) 
+		{
+			$val = $node->getTextByLcid($lcid);
+			$indexedDocument->addAggregateText($val);
+		}
+	}
 }
