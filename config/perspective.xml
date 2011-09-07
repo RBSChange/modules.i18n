@@ -25,11 +25,10 @@
         <drop model="modules_generic/folder" action="move"/>
       </drops>
       <contextactions>
-        <contextaction name="edit"/>
+        <contextaction name="openFolder"/>
         <contextaction name="delete"/>
         <contextaction name="createFolder"/>
         <contextaction name="openTreeNodeOrder"/>
-        <contextaction name="openFolder"/>
         <contextaction name="createPackage"/>
       </contextactions>
     </model>
