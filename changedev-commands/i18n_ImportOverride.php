@@ -3,7 +3,7 @@
  * commands_i18n_ImportOverride
  * @package modules.i18n.command
  */
-class commands_i18n_ImportOverride extends commands_AbstractChangeCommand
+class commands_i18n_ImportOverride extends c_ChangescriptCommand
 {
 	/**
 	 * @return String

@@ -3,7 +3,7 @@
  * commands_i18n_FlushUserEdited
  * @package modules.i18n.command
  */
-class commands_i18n_FlushUserEdited extends commands_AbstractChangeCommand
+class commands_i18n_FlushUserEdited extends c_ChangescriptCommand
 {
 	/**
 	 * @return String

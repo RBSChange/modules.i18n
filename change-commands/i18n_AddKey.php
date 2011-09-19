@@ -3,7 +3,7 @@
  * commands_i18n_AddKey
  * @package modules.i18n.command
  */
-class commands_i18n_AddKey extends commands_AbstractChangeCommand
+class commands_i18n_AddKey extends c_ChangescriptCommand
 {
 	/**
 	 * @return String
