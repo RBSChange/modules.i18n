@@ -50,13 +50,11 @@
   <action name="onRefreshpackageSuccess">
     <parameter name="result"/>
     <body><![CDATA[
-    		wCore.debug(wCore.dump(result.contents));
 			getController().alert("${transui:m.i18n.bo.general.package-added,lab,js} " + result.contents.nbPackages + 
 				 "\n${transui:m.i18n.bo.general.folder-added,lab,js} " +  result.contents.nbFolders);
 		]]></body>
   </action>
-  
-  
+    
    <action name="clearCaches">
     <parameter name="listWidget"/>
     <body><![CDATA[
