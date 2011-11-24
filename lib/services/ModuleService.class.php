@@ -126,4 +126,141 @@ class i18n_ModuleService extends ModuleBaseService
 		}
 		return '';
 	}
+	
+	/**
+	 * 
+	 * @param c_Package $pk
+	 * @param string $LCID
+	 * @param string $refLCID
+	 * @param boolean $delete
+	 * @return true
+	 */
+	public function addMissingKeys($pk, $LCID, $refLCID, $delete)
+	{
+		$basePath = f_util_FileUtils::buildPath($pk->getPath(), 'i18n');
+		if (is_dir($basePath))
+		{
+			if ($pk->isFramework())
+			{
+				$baseKey = 'f';
+			}
+			elseif ($pk->isModule())
+			{
+				$baseKey = 'm.' . $pk->getName();
+			}
+			elseif ($pk->isTheme())
+			{
+				$baseKey = 't.' . $pk->getName();
+			}
+			else
+			{
+				return 'Invalid package: ' . $pk->getKey();
+			}
+			
+			$this->addMissingKeysForDir($basePath, $baseKey, $LCID, $refLCID, $delete);
+		}
+		return true;
+	}
+	
+	
+	private function addMissingKeysForDir($basePath, $baseKey, $LCID, $refLCID, $delete)
+	{
+		$fixed = false;
+		$toDelete = false;
+		foreach (scandir($basePath) as $entry)
+		{
+			if ($entry[0] === '.') {continue;}
+			$path = f_util_FileUtils::buildPath($basePath, $entry);
+			
+			if (is_dir($path))
+			{
+				$this->addMissingKeysForDir($path, $baseKey . '.' . $entry, $LCID, $refLCID, $delete);
+			}
+			
+			if ($entry === $refLCID . '.xml')
+			{
+				$this->addMissingKeysForFile($path, $baseKey, $LCID, $delete);
+				$fixed = true;
+				$toDelete = false;
+			}
+			elseif ($delete && !$fixed && $entry === $LCID . '.xml')
+			{
+				$toDelete = $path;
+			}
+		}
+		
+		if ($toDelete)
+		{
+			f_util_FileUtils::unlink($toDelete);
+		}
+	}
+	
+	private function addMissingKeysForFile($path, $baseKey, $LCID, $delete)
+	{
+		$src = f_util_DOMUtils::fromPath($path);
+		$destPath = f_util_FileUtils::buildPath(dirname($path), $LCID . '.xml');
+		if (!is_readable($destPath))
+		{
+			$dest = f_util_DOMUtils::fromString('<?xml version="1.0" encoding="utf-8"?><i18n />');
+		}
+		else
+		{
+			$dest = f_util_DOMUtils::fromPath($destPath);
+		}
+		
+		$destKeys = $dest->documentElement;		
+		$destKeys->setAttribute('lcid', $LCID);
+		$destKeys->setAttribute('baseKey', $baseKey);
+		
+		if ($delete)
+		{
+			$dn = array();
+			foreach ($dest->getElementsByTagName('key') as $key)
+			{
+				/* @var $key DOMElement */
+				$id = $key->getAttribute('id');
+				if ($src->findUnique("//*[@id='$id']") === null)
+				{
+					$dn[] = $key;
+				}
+			}
+			foreach ($dn as $key) {$key->parentNode->removeChild($key);}
+		}
+		
+		
+		$dn = array();
+		foreach ($dest->getElementsByTagName('include') as $include)
+		{
+			$dn[] = $include;
+		}
+		foreach ($dn as $include) {$include->parentNode->removeChild($include);}		
+		
+		
+		
+		foreach ($src->getElementsByTagName('include') as $include)
+		{
+			/* @var $include DOMElement */
+			if ($destKeys->hasChildNodes())
+			{
+				$destKeys->insertBefore($dest->importNode($include, false), $destKeys->firstChild);
+			}
+			else
+			{
+				$destKeys->appendChild($dest->importNode($include, false));
+			}
+		}
+		
+		foreach ($src->getElementsByTagName('key') as $key)
+		{
+			/* @var $key DOMElement */
+			$id = $key->getAttribute('id');
+			if ($dest->findUnique("//*[@id='$id']") === null)
+			{
+				$destKeys->appendChild($dest->importNode($key, false)); 
+			}
+		}
+		
+		echo $destPath, PHP_EOL;	
+		$dest->save($destPath);
+	}
 }
