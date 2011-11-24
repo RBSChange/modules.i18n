@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.i18n.bo.general" lcid="en_GB">
-  <key id="module-name" format="TEXT">Translate</key>
-  <key id="system-folder-name" format="TEXT">Translate</key>
+  <key id="module-name">Translation</key>
+  <key id="system-folder-name">Translation</key>
+  <key id="cache-cleared">Caches cleared</key>
+  <key id="folder-added">Number of folders added</key>
+  <key id="package-added">Number of packages added</key>
+  <key id="package-not-initialized">Package not initialized</key>
+  <key id="updating-package">Updating the structure…</key>
 </i18n>
