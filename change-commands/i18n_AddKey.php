@@ -7,7 +7,6 @@ class commands_i18n_AddKey extends commands_AbstractChangeCommand
 {
 	/**
 	 * @return String
-	 * @example " "
 	 */
 	function getUsage()
 	{
@@ -16,7 +15,6 @@ class commands_i18n_AddKey extends commands_AbstractChangeCommand
 
 	/**
 	 * @return String
-	 * @example "initialize a document"
 	 */
 	function getDescription()
 	{
