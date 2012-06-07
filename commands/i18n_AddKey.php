@@ -6,55 +6,38 @@
 class commands_i18n_AddKey extends c_ChangescriptCommand
 {
 	/**
-	 * @return String
-	 * @example " "
+	 * @return string
 	 */
-	function getUsage()
+	public function getUsage()
 	{
 		return "<keypath> <lang> <text>";
 	}
 
 	/**
-	 * @return String
-	 * @example "initialize a document"
+	 * @return string
 	 */
-	function getDescription()
+	public function getDescription()
 	{
 		return "Add new locale key";
 	}
-	
-	/**
-	 * @param String[] $params
-	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 */
-//	protected function validateArgs($params, $options)
-//	{
-//	}
-
-	/**
-	 * @return String[]
-	 */
-//	function getOptions()
-//	{
-//	}
 
 	/**
 	 * @param Integer $completeParamCount the parameters that are already complete in the command line
-	 * @param String[] $params
-	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 * @return String[] or null
+	 * @param string[] $params
+	 * @param array<string, string> $options where the option array key is the option name, the potential option value or true
+	 * @return string[] or null
 	 */
-	function getParameters($completeParamCount, $params, $options, $current)
+	public function getParameters($completeParamCount, $params, $options, $current)
 	{
 		return null;
 	}
 
 	/**
-	 * @param String[] $params
-	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
+	 * @param string[] $params
+	 * @param array<string, string> $options where the option array key is the option name, the potential option value or true
 	 * @see c_ChangescriptCommand::parseArgs($args)
 	 */
-	function _execute($params, $options)
+	public function _execute($params, $options)
 	{
 		$this->message("== Add new locale ==");
 		$this->loadFramework();

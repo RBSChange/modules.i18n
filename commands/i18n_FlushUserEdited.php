@@ -6,45 +6,28 @@
 class commands_i18n_FlushUserEdited extends c_ChangescriptCommand
 {
 	/**
-	 * @return String
-	 * @example "<moduleName> <name>"
+	 * @return string
 	 */
-	function getUsage()
+	public function getUsage()
 	{
 		return "";
 	}
 
 	/**
-	 * @return String
-	 * @example "initialize a document"
+	 * @return string
 	 */
-	function getDescription()
+	public function getDescription()
 	{
 		return "Flush User edited locales to override project path";
 	}
-	
-	/**
-	 * @param String[] $params
-	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 */
-//	protected function validateArgs($params, $options)
-//	{
-//	}
 
 	/**
-	 * @return String[]
-	 */
-//	function getOptions()
-//	{
-//	}
-
-	/**
-	 * @param Integer $completeParamCount the parameters that are already complete in the command line
-	 * @param String[] $params
+	 * @param integer $completeParamCount the parameters that are already complete in the command line
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 * @return String[] or null
+	 * @return string[] or null
 	 */
-	function getParameters($completeParamCount, $params, $options, $current)
+	public function getParameters($completeParamCount, $params, $options, $current)
 	{
 		$ls = LocaleService::getInstance();
 		$packages = $ls->getUserEditedPackageNames();		
@@ -56,7 +39,7 @@ class commands_i18n_FlushUserEdited extends c_ChangescriptCommand
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 * @see c_ChangescriptCommand::parseArgs($args)
 	 */
-	function _execute($params, $options)
+	public function _execute($params, $options)
 	{
 		$this->message("== Flush User edited locales ==");
 		$this->loadFramework();
