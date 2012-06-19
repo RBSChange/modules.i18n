@@ -1,5 +1,5 @@
 <?php
-class i18n_ListLcidsService extends BaseService implements list_ListItemsService
+class i18n_ListLcidsService extends change_BaseService implements list_ListItemsService
 {
 	/**
 	 * @var i18n_ListLcidsService
