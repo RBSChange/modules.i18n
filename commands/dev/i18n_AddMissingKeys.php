@@ -7,7 +7,7 @@
 class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 {
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getUsage()
 	{
@@ -15,7 +15,7 @@ class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 	}
 	
 	/**
-	 * @param String[] $params
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 */
 	public function _execute($params, $options)
@@ -36,8 +36,8 @@ class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 	}
 
 	/**
-	 * @return String
-	 * @example "initialize a document"
+	 * @return string
+	 * For exemple "initialize a document"
 	 */
 	public function getDescription()
 	{
@@ -45,7 +45,7 @@ class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 	}
 	
 	/**
-	 * @return String[]
+	 * @return string[]
 	 */
 	public function getOptions()
 	{
@@ -54,10 +54,10 @@ class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 	
 	/**
 	 * This method is used to handle auto-completion for this command.
-	 * @param Integer $completeParamCount the parameters that are already complete in the command line
-	 * @param String[] $params
+	 * @param integer $completeParamCount the parameters that are already complete in the command line
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 * @return String[] or null
+	 * @return string[] or null
 	 */
 	public function getParameters($completeParamCount, $params, $options, $current)
 	{
@@ -82,7 +82,7 @@ class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 	}
 	
 	/**
-	 * @param String[] $params
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 * @return boolean
 	 */

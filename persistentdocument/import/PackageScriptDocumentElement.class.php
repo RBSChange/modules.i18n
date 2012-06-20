@@ -5,15 +5,15 @@
  */
 class i18n_PackageScriptDocumentElement extends import_ScriptDocumentElement
 {
-    /**
-     * @return i18n_persistentdocument_package
-     */
-    protected function initPersistentDocument()
-    {
-    	return i18n_PackageService::getInstance()->getNewDocumentInstance();
-    }
-    
-    /**
+	/**
+	 * @return i18n_persistentdocument_package
+	 */
+	protected function initPersistentDocument()
+	{
+		return i18n_PackageService::getInstance()->getNewDocumentInstance();
+	}
+	
+	/**
 	 * @return f_persistentdocument_PersistentDocumentModel
 	 */
 	protected function getDocumentModel()

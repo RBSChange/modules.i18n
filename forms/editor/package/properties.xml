@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <panel>
-  <section labeli18n="m.uixul.bo.doceditor.fieldsgroup.title">
-  	<field name="label" type="text" disabled="true" />
-  </section>
-  <section label="${transui:m.i18n.bo.editor.section-keys,ucf,attr}" anonid="keysPages">
-  </section>  
+	<section labeli18n="m.uixul.bo.doceditor.fieldsgroup.title">
+		<field name="label" type="text" disabled="true" />
+	</section>
+	<section label="${trans:m.i18n.bo.editor.section-keys,ucf,attr}" anonid="keysPages">
+	</section>
 	<xul>
 		<javascript>
 			<field name="mi18nlangselector">null</field>
 			<field name="mi18npaginator">null</field>
-			
 			<constructor><![CDATA[
 				var actbar = this.getElementByAnonId('action-bar');			
 				this.getElementByAnonId('next_error_property').hidden= true;
@@ -26,7 +25,6 @@
 				this.extendMethod("updateCommandsUI", this.updateEditContentUI);
 				this.extendMethod("fireInitializeComplete", this.initializePackageKeys);
 			]]></constructor>
-			
 			<property name="fromLang">
 				<getter><![CDATA[
 					if (this.hasAttribute("fromlang"))
@@ -38,8 +36,7 @@
 				<setter><![CDATA[
 					this.setAttribute("fromlang", val); 
 				]]></setter>
-			</property>	
-
+			</property>
 			<property name="toLang">
 				<getter><![CDATA[
 					if (this.hasAttribute("tolang"))
@@ -51,8 +48,7 @@
 				<setter><![CDATA[
 					this.setAttribute("tolang", val); 
 				]]></setter>
-			</property>	
-			
+			</property>
 			<property name="pageIndex">
 				<getter><![CDATA[
 					if (this.hasAttribute("pageindex"))
@@ -64,8 +60,7 @@
 				<setter><![CDATA[
 					this.setAttribute("pageindex", val); 
 				]]></setter>
-			</property>	
-
+			</property>
 			<method name="onToLangChange">
 				<parameter name="toLang" />
 				<body><![CDATA[
@@ -79,7 +74,6 @@
 					}
 				]]></body>
 			</method>
-			
 			<method name="onFromLangChange">
 				<parameter name="fromLang" />
 				<body><![CDATA[
@@ -99,7 +93,6 @@
 					}
 				]]></body>
 			</method>
-													
 			<method name="updateEditContentUI">
 				<parameter name="event" />
 				<body><![CDATA[
@@ -112,7 +105,6 @@
 					}
 				]]></body>
 			</method>
-			
 			<method name="getInitializeParameters">
 				<body><![CDATA[
 					return {
@@ -124,7 +116,6 @@
 					};
 				]]></body>
 			</method>
-			
 			<method name="initializePackageKeys">
 				<parameter name="result" />
 				<body><![CDATA[
@@ -163,11 +154,10 @@
 					wCore.error("initializePackageKeys", [result], e);
 				}
 				]]></body>
-			</method>	
-			
+			</method>
 			<method name="appendKey">
-				<parameter name="keysPages" />	
-				<parameter name="keyData" />		
+				<parameter name="keysPages" />
+				<parameter name="keyData" />
 				<body><![CDATA[
 					var row = document.createElement('row');
 					
@@ -191,14 +181,13 @@
 					else
 					{
 						field.setAttribute('initialvalue', '');
-					}		
+					}
 					field.setAttribute('hidehelp', 'true');
 					keysPages.appendChild(row);
 				]]></body>
 			</method>
-			
 			<method name="removeAllKeys">
-			<body><![CDATA[
+				<body><![CDATA[
 					var keysPages = this.getElementByAnonId('keysPages');
 					while (keysPages.lastChild)
 					{
@@ -206,7 +195,6 @@
 					}
 				]]></body>
 			</method>
-			
 			<method name="resetProperties">
 				<body><![CDATA[
 					var keysPages = this.getElementByAnonId('keysPages');
@@ -221,7 +209,6 @@
 					this.gotoTop();
 				]]></body>
 			</method>
-			
 			<method name="onPageIndexChange">
 				<parameter name="newPageIndex" />
 				<body><![CDATA[
@@ -240,7 +227,6 @@
 					}
 				]]></body>
 			</method>
-			
 			<method name="getLoadPageParameters">
 				<body><![CDATA[
 					return {
@@ -252,14 +238,12 @@
 					};
 				]]></body>
 			</method>
-			
 			<method name="fireLoadPageComplete">
 				<parameter name="result" />
 				<body><![CDATA[	
 					this.initializePackageKeys(result);
 				]]></body>
-			</method>	
-			
+			</method>
 			<method name="preparePropertiesValues">
 				<parameter name="attributes" />
 				<body><![CDATA[	
@@ -277,10 +261,10 @@
 						{
 							updatedkeys.push(field.getModifiedValue());
 						}
-					}					
+					}
 					attributes.updatedkeys = wCore.stringifyJSON(updatedkeys);
 				]]></body>
-			</method>			
+			</method>
 		</javascript>
 	</xul>
 </panel>

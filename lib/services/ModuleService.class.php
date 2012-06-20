@@ -1,38 +1,11 @@
 <?php
 /**
- * @package modules.i18n.lib.services
+ * @package modules.i18n
+ * @method i18n_ModuleService getInstance()
  */
 class i18n_ModuleService extends ModuleBaseService
 {
 	/**
-	 * Singleton
-	 * @var i18n_ModuleService
-	 */
-	private static $instance = null;
-
-	/**
-	 * @return i18n_ModuleService
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$instance))
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-	
-	/**
-	 * @param Integer $documentId
-	 * @return f_persistentdocument_PersistentTreeNode
-	 */
-//	public function getParentNodeForPermissions($documentId)
-//	{
-//		// Define this method to handle permissions on a virtual tree node. Example available in list module.
-//	}
-
-	/**
-	 * 
 	 * @param generic_persistentdocument_folder $folder
 	 */
 	public function refreshPackage($folder)
@@ -91,6 +64,9 @@ class i18n_ModuleService extends ModuleBaseService
 		return $package;	
 	}
 	
+	/**
+	 * @return string[]
+	 */
 	public function getLcidLabels()
 	{
 		$items = array();
@@ -128,7 +104,6 @@ class i18n_ModuleService extends ModuleBaseService
 	}
 	
 	/**
-	 * 
 	 * @param c_Package $pk
 	 * @param string $LCID
 	 * @param string $refLCID
@@ -161,7 +136,6 @@ class i18n_ModuleService extends ModuleBaseService
 		}
 		return true;
 	}
-	
 	
 	private function addMissingKeysForDir($basePath, $baseKey, $LCID, $refLCID, $delete)
 	{
@@ -235,8 +209,6 @@ class i18n_ModuleService extends ModuleBaseService
 		}
 		foreach ($dn as $include) {$include->parentNode->removeChild($include);}		
 		
-		
-		
 		foreach ($src->getElementsByTagName('include') as $include)
 		{
 			/* @var $include DOMElement */
@@ -260,7 +232,7 @@ class i18n_ModuleService extends ModuleBaseService
 			}
 		}
 		
-		echo $destPath, PHP_EOL;	
+		echo $destPath, PHP_EOL;
 		$dest->save($destPath);
 	}
 }

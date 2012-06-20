@@ -22,7 +22,7 @@ class commands_i18n_AddKey extends c_ChangescriptCommand
 	}
 
 	/**
-	 * @param Integer $completeParamCount the parameters that are already complete in the command line
+	 * @param integer $completeParamCount the parameters that are already complete in the command line
 	 * @param string[] $params
 	 * @param array<string, string> $options where the option array key is the option name, the potential option value or true
 	 * @return string[] or null

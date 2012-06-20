@@ -1,27 +1,10 @@
 <?php
 /**
- * i18n_PackageService
  * @package modules.i18n
+ * @method i18n_PackageService getInstance()
  */
 class i18n_PackageService extends f_persistentdocument_DocumentService
 {
-	/**
-	 * @var i18n_PackageService
-	 */
-	private static $instance;
-
-	/**
-	 * @return i18n_PackageService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
 	/**
 	 * @return i18n_persistentdocument_package
 	 */
@@ -38,7 +21,7 @@ class i18n_PackageService extends f_persistentdocument_DocumentService
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_i18n/package');
+		return $this->getPersistentProvider()->createQuery('modules_i18n/package');
 	}
 	
 	/**
@@ -49,12 +32,12 @@ class i18n_PackageService extends f_persistentdocument_DocumentService
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_i18n/package', false);
+		return $this->getPersistentProvider()->createQuery('modules_i18n/package', false);
 	}
 		
 	/**
 	 * @param i18n_persistentdocument_package $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @param integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
 	protected function preSave($document, $parentNodeId)

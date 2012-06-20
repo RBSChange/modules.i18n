@@ -1,27 +1,12 @@
 <?php
+/**
+ * @package modules.i18n
+ * @method i18n_ListLcidsService getInstance()
+ */
 class i18n_ListLcidsService extends change_BaseService implements list_ListItemsService
 {
 	/**
-	 * @var i18n_ListLcidsService
-	 */
-	private static $instance;
-	
-
-	/**
-	 * @return i18n_ListLcidsService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-	
-
-	/**
-	 * @return array
+	 * @return list_Item[]
 	 */
 	public function getItems()
 	{
@@ -32,5 +17,4 @@ class i18n_ListLcidsService extends change_BaseService implements list_ListItems
 		}
 		return $items;
 	}
-
 }
