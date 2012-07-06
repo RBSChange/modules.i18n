@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.i18n.bo.actions" lcid="en_GB">
-  <key id="create_">create</key>
-  <key id="create-package">create</key>
-  <key id="clearcaches">Clear the caches</key>
-  <key id="refreshpackage">Update the structure</key>
+	<key id="create_">create</key>
+	<key id="create-package">create</key>
+	<key id="clearcaches">Clear the caches</key>
+	<key id="refreshpackage">Update the structure</key>
 </i18n>

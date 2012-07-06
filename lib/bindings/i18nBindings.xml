@@ -6,14 +6,14 @@
 	<binding id="i18nlangselector" extends="chrome://global/content/bindings/general.xml#basecontrol">
 		<xbl:content>
 			<xul:hbox align="center">
-				<xul:label value="${transui:m.uixul.bo.doceditor.localize-in,ucf} " />
+				<xul:label value="${trans:m.uixul.bo.doceditor.localize-in,ucf} " />
 				<xul:menulist anonid="tolang" xbl:inherits="disabled" onselect="document.getBindingParent(this).onLocalizeTo(this)">
-				    <xul:menupopup />
+					<xul:menupopup />
 				</xul:menulist>
-				<xul:label value=" ${transui:m.uixul.bo.doceditor.localize-from,ucf} " />
+				<xul:label value=" ${trans:m.uixul.bo.doceditor.localize-from,ucf} " />
 				<xul:menulist anonid="fromlang" onselect="document.getBindingParent(this).onLocalizeFrom(this)">
-				    <xul:menupopup />
-				</xul:menulist>						
+					<xul:menupopup />
+				</xul:menulist>
 			</xul:hbox>
 		</xbl:content>
 		
@@ -30,7 +30,7 @@
 					return this.getAttribute("fromlang");
 				]]></getter>
 			</property>
-						
+			
 			<method name="onLocalizeTo">
 				<parameter name="menulistElem" />
 				<body><![CDATA[
@@ -77,7 +77,7 @@
 			
 			<method name="fireEvent">
 				<parameter name="name" />
-				<body><![CDATA[			
+				<body><![CDATA[
 					var evt = document.createEvent("Event");
 					evt.initEvent(name, true, true);
 					this.dispatchEvent(evt);
@@ -91,31 +91,31 @@
 			<xul:toolbar anonid="navigationtb" orient="horizontal" flex="1" xbl:inherits="hidden">
 				<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBack(-1)"
 					image="{IconsBase}/small/control-begin.png"	
-					tooltiptext="${transui:m.uixul.bo.general.navigate-begin,ucf}"/>
+					tooltiptext="${trans:m.uixul.bo.general.navigate-begin,ucf}"/>
 				<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(5)"
 					image="{IconsBase}/small/control-double-backward.png"
-					tooltiptext="${transui:m.uixul.bo.general.navigate-back-quick,ucf}"/>
+					tooltiptext="${trans:m.uixul.bo.general.navigate-back-quick,ucf}"/>
 				<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack(1)"
 					image="{IconsBase}/small/control-backward.png"
-					tooltiptext="${transui:m.uixul.bo.general.navigate-back,ucf}"/>
+					tooltiptext="${trans:m.uixul.bo.general.navigate-back,ucf}"/>
 				<xul:hbox align="center">
-					<xul:label anonid="navigationpagelabel" value="${transui:m.i18n.bo.editor.keys,ucf}" />
+					<xul:label anonid="navigationpagelabel" value="${trans:m.i18n.bo.editor.keys,ucf}" />
 					<xul:label anonid="navigationindex" value="0" />
-					<xul:label anonid="navigationpageseparator" value="${transui:m.uixul.bo.general.out-of}" />
+					<xul:label anonid="navigationpageseparator" value="${trans:m.uixul.bo.general.out-of}" />
 					<xul:label anonid="navigationtotal" value="0" />
 				</xul:hbox>
 				<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext(1)"
 					image="{IconsBase}/small/control-forward.png"
-					tooltiptext="${transui:m.uixul.bo.general.navigate-next,ucf}"/>
+					tooltiptext="${trans:m.uixul.bo.general.navigate-next,ucf}"/>
 				<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(5)"
 					image="{IconsBase}/small/control-double-forward.png"
-					tooltiptext="${transui:m.uixul.bo.general.navigate-next-quick,ucf}"/>
+					tooltiptext="${trans:m.uixul.bo.general.navigate-next-quick,ucf}"/>
 				<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateNext(-1)"
 					image="{IconsBase}/small/control-end.png"
-					tooltiptext="${transui:m.uixul.bo.general.navigate-end,ucf}"/>
+					tooltiptext="${trans:m.uixul.bo.general.navigate-end,ucf}"/>
 			</xul:toolbar>
 		</xbl:content>
-		<implementation>		
+		<implementation>
 			<property name="pageSize">
 				<getter><![CDATA[
 					if (this.hasAttribute("pagesize"))
@@ -185,7 +185,7 @@
 					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext").disabled = disableNext;
 					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext2").disabled = disableNext;
 					document.getAnonymousElementByAttribute(this, "anonid", "navigationend").disabled = disableNext;	
-				]]></body>			
+				]]></body>
 			</method>
 			
 			<method name="navigateBack">
@@ -203,7 +203,7 @@
 					}
 					this.fireEvent("pageIndexChange");
 				]]></body>
-			</method>	
+			</method>
 			
 			<method name="navigateNext">
 				<parameter name="offset" />
@@ -212,7 +212,7 @@
 					if (offset == -1)
 					{
 						this.pageIndex = maxPageIndex;
-					} 
+					}
 					else
 					{
 						var i = this.pageIndex + offset;
@@ -230,7 +230,7 @@
 					this.dispatchEvent(evt);
 				]]></body>
 			</method>
-		</implementation>	
+		</implementation>
 	</binding>
 	
 	<binding id="i18nkey" extends="form.cField#cTextField">
@@ -254,9 +254,9 @@
 							this.mData = {}
 						}
 					}
-					return this.mData;    
+					return this.mData;	
 				]]></getter>
-			</property>			
+			</property>
 
 			<property name="toLang" readonly="true">
 				<getter><![CDATA[
@@ -281,7 +281,7 @@
 					return this.getAttribute("data-useredited") == "true";
 				]]></getter>
 			</property>	
-									
+			
 			<constructor><![CDATA[
 				wCore.debug('i18nkey.constructor');
 				this.mContentFrom = document.getAnonymousElementByAttribute(this, "anonid", "contentFrom");
@@ -293,7 +293,7 @@
 			<method name="initializeExtendUI">
 				<body><![CDATA[
 					var data = this.i18nData;
-					var toLang = this.toLang;	
+					var toLang = this.toLang;
 					if (toLang in data)
 					{
 						this.setAttribute('data-initialformat', data[toLang].format);
@@ -304,7 +304,7 @@
 						this.setAttribute('data-initialformat', "TEXT");
 						this.setAttribute('data-useredited', 'false');
 					}
-									
+					
 					this.mHtmlFormat.checked = (this.initialformat == "HTML");
 					this.mUserEdit.checked = this.useredited;
 					
@@ -340,7 +340,7 @@
 				<parameter name="fromLang" />
 				<body><![CDATA[
 					this.setAttribute("data-fromLang", fromLang);
-					var data = this.i18nData;					
+					var data = this.i18nData;
 					if (fromLang in data)
 					{
 						this.mContentFrom.value = data[fromLang].text;
@@ -350,7 +350,7 @@
 						this.mContentFrom.value = '';
 					}
 				]]></body>
-			</method>	
+			</method>
 			
 			<method name="changeToLang">
 				<parameter name="toLang" />
@@ -370,7 +370,7 @@
 					}
 					this.mHtmlFormat.checked = (this.initialformat == "HTML");
 				]]></body>
-			</method>				
+			</method>
 
 			<method name="onCopyFrom">
 				<parameter name="toLang" />
@@ -380,28 +380,27 @@
 					{
 						var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);  
 						gClipboardHelper.copyString(txt); 
-					} 					
+					}
 				]]></body>
-			</method>	
+			</method>
 			
 			<method name="onFormatChange">
 				<body><![CDATA[
 					wCore.debug('changeFromLang');
-					this.valueChanged();				
+					this.valueChanged();
 				]]></body>
-			</method>	
-						
-			<method name="getModifiedValue">			
+			</method>
+			
+			<method name="getModifiedValue">
 				<body><![CDATA[
 					return {"id": this.getAttribute("data-id"), 
 							"content" : this.value,
 							"lcid" : this.toLang,
 							"format" : this.mHtmlFormat.checked ? "HTML" : "TEXT"
-						   }			
+					}
 				]]></body>
-			</method>							
-							
-		</implementation>		
+			</method>
+		</implementation>
 		<content>
 			<xul:vbox flex="1">
 				<xul:hbox>
@@ -413,10 +412,10 @@
 					<xul:toolbar orient="vertical">
 						<xul:toolbarbutton anonid="useredit" type="checkbox" disabled="true" autoCheck="false" checked="false" 
 							image="{IconsBase}/small/user-backoffice.png"
-							tooltiptext="${transui:m.i18n.bo.editor.user-edited,ucf}" />
+							tooltiptext="${trans:m.i18n.bo.editor.user-edited,ucf}" />
 						<xul:toolbarbutton anonid="htmlformat" type="checkbox" checked="false"
 							image="{IconsBase}/small/ui-label.png" oncommand="document.getBindingParent(this).onFormatChange()"
-							tooltiptext="${transui:m.i18n.bo.editor.html-content,ucf}" />
+							tooltiptext="${trans:m.i18n.bo.editor.html-content,ucf}" />
 					</xul:toolbar>
 				</xul:hbox>
 				<xul:hbox>
@@ -425,8 +424,8 @@
 					<xul:spacer width="10px" />
 					<xul:toolbar orient="vertical">
 						<xul:toolbarbutton anonid="copybutton" image="{IconsBase}/small/richtext/copy.png"
-							tooltiptext="${transui:m.uixul.bo.richtext.copy,ucf}" oncommand="document.getBindingParent(this).onCopyFrom()" />
-					</xul:toolbar>					
+							tooltiptext="${trans:m.uixul.bo.richtext.copy,ucf}" oncommand="document.getBindingParent(this).onCopyFrom()" />
+					</xul:toolbar>
 				</xul:hbox>
 			</xul:vbox>
 		</content>	

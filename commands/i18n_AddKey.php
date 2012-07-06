@@ -58,7 +58,7 @@ class commands_i18n_AddKey extends c_ChangescriptCommand
 		}
 		else if ($pathPart[0] === 't')
 		{
-			$path = f_util_FileUtils::buildWebeditPath('themes', $pathPart[1]);
+			$path = f_util_FileUtils::buildProjectPath('themes', $pathPart[1]);
 			if (!is_dir($path))
 			{
 				return $this->quitError('Invalid theme ' . $pathPart[1]);

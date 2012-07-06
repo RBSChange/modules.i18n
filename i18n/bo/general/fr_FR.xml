@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.i18n.bo.general" lcid="fr_FR">
-  <key id="module-name" format="TEXT">Traduction</key>
-  <key id="system-folder-name" format="TEXT">Traduction</key>
-  <key id="package-not-initialized" format="TEXT">Initialisé la structure des paquets</key>
-  <key id="updating-package" format="TEXT">Mise à jour de la structure en cours...</key>
-  <key id="package-added" format="TEXT">Nombre de paquets ajouté</key>
-  <key id="folder-added" format="TEXT">Nombre de dossiers ajouté</key>
-  <key id="cache-cleared">Caches vidés</key>
+	<key id="module-name" format="TEXT">Traduction</key>
+	<key id="system-folder-name" format="TEXT">Traduction</key>
+	<key id="package-not-initialized" format="TEXT">Initialisé la structure des paquets</key>
+	<key id="updating-package" format="TEXT">Mise à jour de la structure en cours...</key>
+	<key id="package-added" format="TEXT">Nombre de paquets ajouté</key>
+	<key id="folder-added" format="TEXT">Nombre de dossiers ajouté</key>
+	<key id="cache-cleared">Caches vidés</key>
 </i18n>

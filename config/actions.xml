@@ -15,67 +15,67 @@
 				var refreshpackageAction = this.getActionInfo('refreshpackage');	
 				var callback = function (notif, bI) {bI.module.initRefreshpackage(bI.module.mRootFolderId)};
 				var buttons = [{callback:callback, label:refreshpackageAction.label, accessKey:"", module: this}];
-				notifZone.appendNotification("${transui:m.i18n.bo.general.package-not-initialized,js}", 
+				notifZone.appendNotification("${trans:m.i18n.bo.general.package-not-initialized,js}", 
 					'refreshpackage', wToolkit.getIcon('package', 'small'), notifZone.PRIORITY_CRITICAL_BLOCK, buttons);		
 			}
 		]]></body>
 	</action>
 	
   <action name="createFolder">
-    <parameter name="listWidget"/>
-    <body><![CDATA[
+	<parameter name="listWidget"/>
+	<body><![CDATA[
 			this.createDocumentEditor('modules_i18n_folder', listWidget.getSelectedItems()[0].id);
 		]]></body>
   </action>
   
    <action name="initRefreshpackage">
-    <parameter name="id"/>
-    <body><![CDATA[
+	<parameter name="id"/>
+	<body><![CDATA[
 			var lang = this.getContextLang();
-			getController().alert("${transui:m.i18n.bo.general.updating-package,js}")
+			getController().alert("${trans:m.i18n.bo.general.updating-package,js}")
 			this.executeJSON("Refreshpackage", {cmpref: id, lang: lang });
 		]]></body>
   </action>
   
   <action name="refreshpackage">
-    <parameter name="listWidget"/>
-    <body><![CDATA[
+	<parameter name="listWidget"/>
+	<body><![CDATA[
 			var id = listWidget.getSelectedIds()[0];
 			var lang = this.getContextLang();
-			getController().alert("${transui:m.i18n.bo.general.updating-package,js}")
+			getController().alert("${trans:m.i18n.bo.general.updating-package,js}")
 			this.executeJSON("Refreshpackage", {cmpref: id, lang: lang });
 		]]></body>
   </action>
   
   <action name="onRefreshpackageSuccess">
-    <parameter name="result"/>
-    <body><![CDATA[
-    		wCore.debug(wCore.dump(result.contents));
-			getController().alert("${transui:m.i18n.bo.general.package-added,lab,js} " + result.contents.nbPackages + 
-				 "\n${transui:m.i18n.bo.general.folder-added,lab,js} " +  result.contents.nbFolders);
+	<parameter name="result"/>
+	<body><![CDATA[
+			wCore.debug(wCore.dump(result.contents));
+			getController().alert("${trans:m.i18n.bo.general.package-added,lab,js} " + result.contents.nbPackages + 
+				 "\n${trans:m.i18n.bo.general.folder-added,lab,js} " +  result.contents.nbFolders);
 		]]></body>
   </action>
   
   
    <action name="clearCaches">
-    <parameter name="listWidget"/>
-    <body><![CDATA[
-    		var lang = this.getContextLang();
+	<parameter name="listWidget"/>
+	<body><![CDATA[
+			var lang = this.getContextLang();
 			this.executeJSON("ClearCaches", {lang: lang });
 		]]></body>
   </action>
   
   <action name="onClearCachesSuccess">
-    <parameter name="listWidget"/>
-    <body><![CDATA[
-    		getController().alert("${transui:m.i18n.bo.general.cache-cleared,js}");
-    		enableReloadInterface();
+	<parameter name="listWidget"/>
+	<body><![CDATA[
+			getController().alert("${trans:m.i18n.bo.general.cache-cleared,js}");
+			enableReloadInterface();
 		]]></body>
   </action>
    
   <action name="createPackage">
-    <parameter name="listWidget"/>
-    <body><![CDATA[this.createDocumentEditor('modules_i18n_package', listWidget.getSelectedItems()[0].id);]]></body>
+	<parameter name="listWidget"/>
+	<body><![CDATA[this.createDocumentEditor('modules_i18n_package', listWidget.getSelectedItems()[0].id);]]></body>
   </action>
   
 </actions>

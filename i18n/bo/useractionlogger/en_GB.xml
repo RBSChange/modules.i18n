@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.i18n.bo.useractionlogger" lcid="en_GB">
-  <key id="delete-package">delete.package {documentlabel}</key>
-  <key id="log-delete-package">log delete package</key>
-  <key id="log-update-package">log update package</key>
-  <key id="update-package">update.package {documentlabel}</key>
-  <key id="insert-package"/>
-  <key id="log-insert-package"/>
+	<key id="delete-package">delete.package {documentlabel}</key>
+	<key id="log-delete-package">log delete package</key>
+	<key id="log-update-package">log update package</key>
+	<key id="update-package">update.package {documentlabel}</key>
+	<key id="insert-package" />
+	<key id="log-insert-package" />
 </i18n>

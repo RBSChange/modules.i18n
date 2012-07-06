@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.i18n.bo.editor" lcid="fr_FR">
-  <key id="section-keys">clés</key>
-  <key id="keys">clés</key>
-  <key id="html-content">contenu HTML</key>
-  <key id="user-edited" format="TEXT">Modifié par l'utilisateur</key>
+	<key id="section-keys">clés</key>
+	<key id="keys">clés</key>
+	<key id="html-content">contenu HTML</key>
+	<key id="user-edited" format="TEXT">Modifié par l'utilisateur</key>
 </i18n>
