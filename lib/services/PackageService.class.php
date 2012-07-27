@@ -73,10 +73,11 @@ class i18n_PackageService extends f_persistentdocument_DocumentService
 	
 	/**
 	 * @param i18n_persistentdocument_package $document
-	 * @param string $actionType
+	 * @param string[] $propertiesNames
 	 * @param array $formProperties
+	 * @param integer $parentId
 	 */
-	public function addFormProperties($document, $propertiesNames, &$formProperties)
+	public function addFormProperties($document, $propertiesNames, &$formProperties, $parentId = null)
 	{
 		if (in_array('loadpaginedkeys', $propertiesNames))
 		{
