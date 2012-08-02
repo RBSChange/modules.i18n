@@ -23,15 +23,6 @@ class i18n_ModuleService extends ModuleBaseService
 	}
 	
 	/**
-	 * @param Integer $documentId
-	 * @return f_persistentdocument_PersistentTreeNode
-	 */
-//	public function getParentNodeForPermissions($documentId)
-//	{
-//		// Define this method to handle permissions on a virtual tree node. Example available in list module.
-//	}
-
-	/**
 	 * 
 	 * @param generic_persistentdocument_folder $folder
 	 */

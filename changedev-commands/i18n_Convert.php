@@ -21,14 +21,6 @@ class commands_i18n_Convert extends commands_AbstractChangeCommand
 		return "Convert old locale folder format";
 	}
 	
-	/**
-	 * @param String[] $params
-	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 */
-//	protected function validateArgs($params, $options)
-//	{
-//	}
-
 	function getOptions()
 	{
 		return array("--rlf", "-cif");

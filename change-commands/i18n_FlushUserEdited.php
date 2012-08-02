@@ -22,21 +22,6 @@ class commands_i18n_FlushUserEdited extends commands_AbstractChangeCommand
 	}
 	
 	/**
-	 * @param String[] $params
-	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 */
-//	protected function validateArgs($params, $options)
-//	{
-//	}
-
-	/**
-	 * @return String[]
-	 */
-//	function getOptions()
-//	{
-//	}
-
-	/**
 	 * @param Integer $completeParamCount the parameters that are already complete in the command line
 	 * @param String[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
