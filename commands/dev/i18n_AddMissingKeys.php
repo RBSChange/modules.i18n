@@ -1,8 +1,6 @@
 <?php
 /**
- * Add Missing Keys
- * i18n.add-missing-keys
- * @package i18n
+ * @package modules.i18n
  */
 class commands_i18n_AddMissingKeys extends c_ChangescriptCommand
 {

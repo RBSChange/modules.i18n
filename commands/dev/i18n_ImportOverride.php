@@ -1,7 +1,6 @@
 <?php
 /**
- * commands_i18n_ImportOverride
- * @package modules.i18n.command
+ * @package modules.i18n
  */
 class commands_i18n_ImportOverride extends c_ChangescriptCommand
 {

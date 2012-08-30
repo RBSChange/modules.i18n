@@ -1,7 +1,6 @@
 <?php
 /**
- * commands_i18n_FlushUserEdited
- * @package modules.i18n.command
+ * @package modules.i18n
  */
 class commands_i18n_FlushUserEdited extends c_ChangescriptCommand
 {
